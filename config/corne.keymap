@@ -4,87 +4,263 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/outputs.h>
+//
+//   Miryoku-style layout — QWERTY base, vim arrows (HJKL), GACS home row mods
+//   Adapted from TOTEM config for Corne (42-key)
+//
+//   Layer 0: BASE    — QWERTY + home row mods
+//   Layer 1: NAV     — vim arrows, clipboard, nav (hold SPACE)
+//   Layer 2: NUM     — numpad left hand (hold BSPC)
+//   Layer 3: MEDIA   — media, BT, RGB (hold ESC)
+//   Layer 4: SYM     — symbols left hand (hold ENTER)
+//   Layer 5: FUN     — function keys left hand (hold DEL)
+//   Layer 6: MOUSE   — mouse movement, scroll, buttons (hold TAB)
 
-#define DEFAULT 0
-#define LOWER   1
-#define RAISE   2
-#define ADJUST  3
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <dt-bindings/zmk/rgb.h>
+
+#define BASE  0
+#define NAV   1
+#define NUM   2
+#define MEDIA 3
+#define SYM   4
+#define FUN   5
+#define MOUSE 6
+
+// Corne key positions (42 keys):
+// Row 0:  0  1  2  3  4  5    6  7  8  9  10  11
+// Row 1: 12 13 14 15 16 17   18 19 20 21  22  23
+// Row 2: 24 25 26 27 28 29   30 31 32 33  34  35
+// Thumb:          36 37 38   39 40 41
+
+&mt {
+    flavor = "tap-preferred";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <175>;
+    require-prior-idle-ms = <150>;
+};
+
+&lt {
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <175>;
+};
 
 / {
-    // Hardware bootloader combos (independent of layer or split BLE connection state)
     combos {
         compatible = "zmk,combos";
 
-        // Left half bootloader: Press TAB (0) + Q (1) together
+        // -- Bootloader (hardware access regardless of layer) --
+
+        // Left half bootloader: TAB (0) + Q (1)
         combo_bootloader_left {
-            timeout-ms = <50>;
-            key-positions = <0 1>;
             bindings = <&bootloader>;
+            key-positions = <0 1>;
+            timeout-ms = <50>;
             require-prior-idle-ms = <150>;
         };
 
-        // Right half bootloader: Press P (10) + BSPC (11) together
-        // Allows putting right half into bootloader over USB even if left half is off/disconnected
+        // Right half bootloader: P (10) + BSPC (11)
+        // Allows flashing the right half over USB even when left is off
         combo_bootloader_right {
-            timeout-ms = <50>;
-            key-positions = <10 11>;
             bindings = <&bootloader>;
+            key-positions = <10 11>;
+            timeout-ms = <50>;
+            require-prior-idle-ms = <150>;
+        };
+
+        // -- Tier 1: Essential --
+
+        combo_caps_word {
+            bindings = <&caps_word>;
+            key-positions = <16 19>;        // F + J (index home row)
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_esc {
+            bindings = <&kp ESC>;
+            key-positions = <2 3>;          // W + E
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_bspc {
+            bindings = <&kp BSPC>;
+            key-positions = <8 9>;          // I + O
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_del {
+            bindings = <&kp DEL>;
+            key-positions = <9 10>;         // O + P
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        // -- Tier 2: High Value --
+
+        combo_tab {
+            bindings = <&kp TAB>;
+            key-positions = <14 15>;        // S + D
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_enter {
+            bindings = <&kp RET>;
+            key-positions = <20 21>;        // K + L
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        // Linux/Windows clipboard combos (Ctrl)
+        combo_copy {
+            bindings = <&kp LC(C)>;
+            key-positions = <26 27>;        // X + C
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_paste {
+            bindings = <&kp LC(V)>;
+            key-positions = <27 28>;        // C + V
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        combo_cut {
+            bindings = <&kp LC(X)>;
+            key-positions = <26 28>;        // X + V (skip middle)
+            timeout-ms = <30>;
+            require-prior-idle-ms = <150>;
+        };
+
+        // -- Tier 3: Vertical Symbol Combos --
+
+        combo_minus {
+            bindings = <&kp MINUS>;
+            key-positions = <19 31>;        // J + M (right index vertical)
+            timeout-ms = <40>;
+            require-prior-idle-ms = <100>;
+        };
+
+        combo_underscore {
+            bindings = <&kp UNDER>;
+            key-positions = <18 30>;        // H + N (right inner vertical)
+            timeout-ms = <40>;
+            require-prior-idle-ms = <100>;
+        };
+
+        combo_equal {
+            bindings = <&kp EQUAL>;
+            key-positions = <16 28>;        // F + V (left index vertical)
+            timeout-ms = <40>;
+            require-prior-idle-ms = <100>;
+        };
+
+        combo_grave {
+            bindings = <&kp GRAVE>;
+            key-positions = <14 26>;        // S + X (left ring vertical)
+            timeout-ms = <40>;
+            require-prior-idle-ms = <100>;
+        };
+
+        combo_semi {
+            bindings = <&kp SEMI>;
+            key-positions = <21 22>;        // L + ' (right ring+pinky home)
+            timeout-ms = <30>;
             require-prior-idle-ms = <150>;
         };
     };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <LOWER RAISE>;
-            then-layer = <ADJUST>;
+    macros {
+        hyper: hyper {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press &kp LGUI &kp LALT &kp LCTRL &kp LSHFT>,
+                <&macro_pause_for_release>,
+                <&macro_release &kp LGUI &kp LALT &kp LCTRL &kp LSHFT>;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
-            display-name = "QWERTY";
+        base_layer {
+            display-name = "BASE";
             bindings = <
-&kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-&kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-&kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-               &kp LGUI &mo LOWER &kp SPACE   &kp RET &mo RAISE &kp RALT
+&kp TAB        &kp Q       &kp W       &kp E         &kp R         &kp T          &kp Y       &kp U         &kp I         &kp O        &kp P        &kp BSPC
+&mt LCTRL ESC  &mt LGUI A  &mt LALT S  &mt LCTRL D   &mt LSHFT F   &kp G          &kp H       &mt RSHFT J   &mt RCTRL K   &mt RALT L   &mt RGUI SQT &hyper
+&kp LSHFT      &kp Z       &kp X       &kp C         &kp V         &kp B          &kp N       &kp M         &kp COMMA     &kp DOT      &kp FSLH     &kp ESC
+                                        &lt MEDIA ESC &lt NAV SPACE &lt MOUSE TAB  &lt SYM RET &lt NUM BSPC  &lt FUN DEL
             >;
         };
 
-        lower_layer {
-            display-name = "NUMBER";
+        nav_layer {
+            display-name = "NAV";
             bindings = <
-&kp TAB   &kp N1 &kp N2 &kp N3 &kp N4 &kp N5   &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp DEL
-&kp LCTRL &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp F11   &kp F12
-&kp LSHFT &kp F6 &kp F7 &kp F8 &kp F9 &kp F10  &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp PSCRN &kp CAPS
-                 &kp LGUI &trans &kp SPACE     &kp RET  &trans    &kp RALT
+&none          &none       &none       &none         &none         &none          &kp LC(LS(Z)) &kp LC(V)   &kp LC(C)     &kp LC(X)    &kp LC(Z)    &none
+&none          &kp LGUI    &kp LALT    &kp LCTRL     &kp LSHFT     &none          &kp LEFT    &kp DOWN      &kp UP        &kp RIGHT    &kp CAPS     &none
+&none          &none       &none       &none         &none         &none          &kp INS     &kp HOME      &kp PG_DN     &kp PG_UP    &kp END      &none
+                                       &none         &none         &none          &kp RET     &kp BSPC      &kp DEL
             >;
         };
 
-        raise_layer {
-            display-name = "SYMBOL";
+        num_layer {
+            display-name = "NUM";
             bindings = <
-&kp TAB   &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp ASTRK &kp LPAR &kp RPAR &kp BSPC
-&kp LCTRL &none    &none  &none    &none    &none       &kp MINUS &kp EQUAL &kp LBKT  &kp RBKT &kp BSLH &kp GRAVE
-&kp LSHFT &none    &none  &none    &none    &none       &kp UNDER &kp PLUS  &kp LBRC  &kp RBRC &kp PIPE &kp TILDE
-                          &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+&none          &kp LBKT    &kp N7      &kp N8        &kp N9        &kp RBKT       &none       &none         &none         &none        &none        &none
+&none          &kp SEMI    &kp N4      &kp N5        &kp N6        &kp EQUAL      &none       &kp RSHFT     &kp RCTRL     &kp RALT     &kp RGUI     &none
+&none          &kp GRAVE   &kp N1      &kp N2        &kp N3        &kp BSLH       &none       &none         &none         &none        &none        &none
+                                       &kp DOT       &kp N0        &kp MINUS      &none       &none         &none
             >;
         };
 
-        adjust_layer {
-            display-name = "ADJUST";
+        media_layer {
+            display-name = "MEDIA";
             bindings = <
-&bootloader  &sys_reset   &none        &none        &none        &none          &none        &kp C_PREV   &kp C_PP     &kp C_NEXT   &kp C_VOL_UP &bootloader
-&none        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &none        &none        &none        &kp C_MUTE   &kp C_VOL_DN &sys_reset
-&out OUT_TOG &out OUT_BLE &out OUT_USB &none        &bt BT_CLR   &bt BT_CLR_ALL &none        &none        &none        &none        &none        &none
-                                        &trans       &trans       &trans         &trans       &trans       &trans
+&none          &none       &none       &none         &none         &none          &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_SAI &none      &none
+&none          &kp LGUI    &kp LALT    &kp LCTRL     &kp LSHFT     &none          &ext_power EP_TOG &kp C_PREV  &kp C_VOL_DN  &kp C_VOL_UP &kp C_NEXT   &none
+&none          &none       &none       &none         &none         &none          &out OUT_TOG &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_CLR
+                                       &none         &none         &none          &kp C_STOP  &kp C_PP      &kp C_MUTE
+            >;
+        };
+
+        sym_layer {
+            display-name = "SYM";
+            bindings = <
+&none          &kp LBRC    &kp AMPS    &kp ASTRK     &kp LPAR      &kp RBRC       &none       &none         &none         &none        &none        &none
+&none          &kp COLON   &kp DLLR    &kp PRCNT     &kp CARET     &kp PLUS       &none       &kp RSHFT     &kp RCTRL     &kp RALT     &kp RGUI     &none
+&none          &kp TILDE   &kp EXCL    &kp AT        &kp HASH      &kp PIPE       &none       &none         &none         &none        &none        &none
+                                       &kp LPAR      &kp RPAR      &kp UNDER      &none       &none         &none
+            >;
+        };
+
+        fun_layer {
+            display-name = "FUN";
+            bindings = <
+&none          &kp F12     &kp F7      &kp F8        &kp F9        &kp PSCRN      &none       &none         &none         &none        &none        &none
+&none          &kp F11     &kp F4      &kp F5        &kp F6        &kp SLCK       &none       &kp RSHFT     &kp RCTRL     &kp RALT     &kp RGUI     &none
+&none          &kp F10     &kp F1      &kp F2        &kp F3        &kp PAUSE_BREAK &none      &none         &none         &none        &none        &none
+                                       &kp K_APP     &kp SPACE     &kp TAB        &none       &none         &none
+            >;
+        };
+
+        mouse_layer {
+            display-name = "MOUSE";
+            bindings = <
+&none          &none       &none       &none         &none         &none          &none            &none            &none          &none             &none        &none
+&none          &kp LGUI    &kp LALT    &kp LCTRL     &kp LSHFT     &none          &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_UP   &mmv MOVE_RIGHT   &none        &none
+&none          &none       &none       &none         &none         &none          &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_UP   &msc SCRL_RIGHT   &none        &none
+                                       &none         &none         &none          &mkp MCLK        &mkp LCLK        &mkp RCLK
             >;
         };
     };
