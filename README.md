@@ -7,9 +7,13 @@ Personal ZMK firmware for a **42-key split Corne keyboard** running on Nice!Nano
 | Part | Detail |
 |---|---|
 | Board | Nice!Nano v2 (nRF52840) |
-| Shield | Corne (split, 6×3+3) |
+| Shield | Corne (split, 6×3+3 = 42 keys) |
 | Display | OLED SSD1306 128×32 |
-| RGB | 27 WS2812 LEDs |
+| RGB | 27 WS2812 LEDs (per-key + underglow) |
+| Bluetooth | 4 profiles (BT_SEL 0–3) |
+| ZMK Studio | Enabled — remap live at [studio.zmk.dev](https://studio.zmk.dev) |
+| Mouse | Enabled — MOUSE layer (hold `Tab`) |
+| Deep Sleep | 15 min idle → ~20µA draw |
 
 ## Keymap — Miryoku-style (7 layers)
 
