@@ -7,6 +7,11 @@ on:
       - "config/**"
       - "build.yaml"
       - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "config/**"
+      - "build.yaml"
+      - ".github/workflows/**"
 
 jobs:
   build:

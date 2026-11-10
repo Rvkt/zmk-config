@@ -1,20 +1,20 @@
 # ZMK Firmware Configuration for Corne Keyboard (42-Key)
 
-This repository contains the custom ZMK firmware configuration for a **42-key split Corne keyboard** (CRKBD with nice!nano v2 microcontrollers).
+This repository contains the production-grade custom ZMK firmware configuration for a **42-key split Corne keyboard** (CRKBD with nice!nano v2 microcontrollers).
 
 ---
 
 ## 🗺️ Layer Map
 
-The layout is arranged into **4 layers** using a **Tri-Layer** system:
-- Hold left thumb `LOWER` for numbers and arrow navigation.
-- Hold right thumb `RAISE` for symbols and programming brackets.
-- Hold **both** `LOWER` + `RAISE` at the same time to open the **Adjust Layer** (Bluetooth, media, and bootloader).
+The layout is arranged into **4 layers** using an intelligent **Tri-Layer** system:
+- Hold left thumb `LWR` for numbers, function keys, and navigation.
+- Hold right thumb `RSE` for pair-matched symbols and programming brackets.
+- Hold **both** `LWR` + `RSE` at the same time to activate the **Adjust Layer** (Bluetooth profiles, media controls, and reset).
 
 ---
 
 ### Layer 0: Base (QWERTY)
-Standard typing layer with dedicated modifier keys and thumb cluster.
+Standard typing layer with dedicated modifier keys and ergonomic thumb cluster.
 
 ```text
 Left Half                                      Right Half
@@ -31,17 +31,17 @@ Left Half                                      Right Half
 
 ---
 
-### Layer 1: Lower (Numbers & Navigation)
-*Trigger:* Hold **`LWR`** (Left thumb middle). Numbers on top, navigation cluster on the right hand.
+### Layer 1: Lower (Numbers, Navigation & Function Keys)
+*Trigger:* Hold **`LWR`** (Left thumb middle). Numbers on top, complete F1–F12 keys, arrow cluster, navigation keys, Delete, and PrintScreen.
 
 ```text
 Left Half                                      Right Half
 ┌─────┬─────┬─────┬─────┬─────┬─────┐        ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│ TAB │  1  │  2  │  3  │  4  │  5  │        │  6  │  7  │  8  │  9  │  0  │BSPC │
+│ TAB │  1  │  2  │  3  │  4  │  5  │        │  6  │  7  │  8  │  9  │  0  │ DEL │
 ├─────┼─────┼─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┼─────┼─────┤
-│CTRL │ F1  │ F2  │ F3  │ F4  │ F5  │        │ LFT │ DWN │ UP  │ RGT │     │     │
+│CTRL │ F1  │ F2  │ F3  │ F4  │ F5  │        │ LFT │ DWN │ UP  │ RGT │ F11 │ F12 │
 ├─────┼─────┼─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┼─────┼─────┤
-│SHFT │ F6  │ F7  │ F8  │ F9  │ F10 │        │HOME │PG_DN│PG_UP│ END │     │     │
+│SHFT │ F6  │ F7  │ F8  │ F9  │ F10 │        │HOME │PG_DN│PG_UP│ END │PSCRN│CAPS │
 └─────┴─────┴─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┴─────┴─────┴─────┘
                   │ GUI │ === │ SPC │        │ ENT │ === │ ALT │
                   └─────┴─────┴─────┘        └─────┴─────┴─────┘
@@ -50,7 +50,7 @@ Left Half                                      Right Half
 ---
 
 ### Layer 2: Raise (Symbols & Code)
-*Trigger:* Hold **`RSE`** (Right thumb middle). Pair-matched brackets `()`, `[]`, `{}`, quotes, and operators.
+*Trigger:* Hold **`RSE`** (Right thumb middle). Pair-matched brackets `()`, `[]`, `{}`, quotes, and operators vertically aligned for muscle memory.
 
 ```text
 Left Half                                      Right Half
@@ -68,80 +68,105 @@ Left Half                                      Right Half
 ---
 
 ### Layer 3: Adjust (Bluetooth, Media & Bootloader)
-*Trigger:* Hold **both `LWR` + `RSE`** at the same time.
+*Trigger:* Hold **both `LWR` + `RSE`** at the same time. The home row safely houses device profile switches without risk of accidental unpairing.
 
 ```text
 Left Half                                      Right Half
 ┌─────┬─────┬─────┬─────┬─────┬─────┐        ┌─────┬─────┬─────┬─────┬─────┬─────┐
 │BOOT │RESET│     │     │     │     │        │     │PREV │PLAY │NEXT │VOL+ │BOOT │
 ├─────┼─────┼─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┼─────┼─────┤
-│BTCLR│ BT0 │ BT1 │ BT2 │ BT3 │ BT4 │        │     │     │     │MUTE │VOL- │RESET│
+│     │ BT0 │ BT1 │ BT2 │ BT3 │ BT4 │        │     │     │     │MUTE │VOL- │RESET│
 ├─────┼─────┼─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┼─────┼─────┤
-│OUTTG│OUTBL│OUTUS│     │     │     │        │     │     │     │     │     │     │
+│OUTTG│OUTBL│OUTUS│     │BTCLR│BTALL│        │     │     │     │     │     │     │
 └─────┴─────┴─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┴─────┴─────┴─────┘
                   │     │ === │     │        │     │ === │     │
                   └─────┴─────┴─────┘        └─────┴─────┴─────┘
 ```
-* **`BOOT`**: Puts that half into bootloader/flashing mode (no physical reset button needed).
+* **`BOOT`**: Reboots that half directly into UF2 bootloader mode (USB drive appears).
 * **`RESET`**: Soft resets the microcontroller.
-* **`BT0`–`BT4`**: Switch between 5 paired devices.
-* **`BTCLR`**: Clears the current Bluetooth profile bonding keys.
-* **`OUTTG`**: Toggle between USB and Bluetooth output.
+* **`BT0`–`BT4`**: Switch between 5 paired host devices.
+* **`BTCLR`**: Clears bonding keys on the currently selected Bluetooth profile.
+* **`BTALL`**: Clears bonding keys across all 5 profiles.
+* **`OUTTG` / `OUTBL` / `OUTUS`**: Toggle output between USB cable and Bluetooth.
 
 ---
 
-## ⚡ Step-by-Step Build & Flash Guide
+## ⚡ Instant Bootloader Combos (Zero-Friction Flashing)
+
+No need to open keyboard cases, fiddle with paperclips, or stress tiny physical reset switches! This config features **hardware combos** evaluated locally on each half:
+
+| Target Half | Combo Keys | Description |
+|:---|:---|:---|
+| **Left Half** | Press **`TAB` + `Q`** together | Immediately opens `NICENANO` drive on Left half |
+| **Right Half** | Press **`P` + `BSPC`** together | Immediately opens `NICENANO` drive on Right half |
+
+> [!TIP]
+> The Right half combo works even when the Left half is powered off or disconnected. Simply plug the Right half into your computer via USB-C and hit **`P` + `BSPC`**.
+
+---
+
+## 📦 Firmware File Selection Matrix
+
+When downloading artifacts from GitHub Actions (`firmware.zip`), choose the file that matches your hardware:
+
+| Hardware Configuration | Left Half File (Central) | Right Half File (Peripheral) |
+|:---|:---|:---|
+| **Standard Corne** *(OLED SSD1306 or No Display)* | `corne_left-nice_nano_v2-zmk.uf2` | `corne_right-nice_nano_v2-zmk.uf2` |
+| **Corne with nice!view** *(E-Paper Displays)* | `corne_left_nice_view-nice_nano_v2-zmk.uf2` | `corne_right_nice_view-nice_nano_v2-zmk.uf2` |
+| **Recovery / Flash Wipe** | `settings_reset-nice_nano_v2-zmk.uf2` *(Flash to both halves)* |
+
+---
+
+## 🚀 Step-by-Step Build & Flash Guide
 
 ### Step 1: Automatic Build via GitHub Actions
-Every time you push changes to the `main` branch of this repository, GitHub Actions automatically compiles the firmware:
+Every time you push changes to `main` (or run manually via Workflow Dispatch):
 1. Open [https://github.com/Rvkt/zmk-config/actions](https://github.com/Rvkt/zmk-config/actions).
 2. Click on the latest workflow run: **Build ZMK Firmware**.
-3. Scroll down to the **Artifacts** section at the bottom.
-4. Download the `firmware.zip` archive.
-5. Extract the downloaded zip file. You will see:
-   - `corne_left-nice_nano_v2-zmk.uf2`
-   - `corne_right-nice_nano_v2-zmk.uf2`
-   - `settings_reset-nice_nano_v2-zmk.uf2` *(Emergency reset firmware)*
-   *(Plus the `_nice_view` variants if your board uses nice!view screens)*
+3. Under the **Artifacts** section at the bottom, download `firmware.zip`.
+4. Extract the zip archive on your computer.
 
 ### Step 2: Flash the Left Half (Central)
 1. Connect the **Left half** to your computer via USB-C.
-2. Double-tap the physical reset button on the nice!nano controller (or press the top-left `BOOT` key on the Adjust layer).
-3. A mass storage device named **`NICENANO`** will appear on your computer (like a USB drive).
-4. Drag and drop `corne_left-nice_nano_v2-zmk.uf2` onto the `NICENANO` drive.
-5. The drive will automatically disconnect and the board will restart with the new firmware.
+2. Trigger bootloader mode by pressing **`TAB` + `Q`** together (or double-tapping the physical reset button).
+3. A mass storage drive named **`NICENANO`** will appear on your computer.
+4. Drag and drop your chosen left `.uf2` file onto the `NICENANO` drive.
+5. The drive will automatically disconnect and the left half reboots.
 
 ### Step 3: Flash the Right Half (Peripheral)
 1. Unplug the Left half.
 2. Connect the **Right half** to your computer via USB-C.
-3. Double-tap the reset button on the Right half.
-4. Drag and drop `corne_right-nice_nano_v2-zmk.uf2` onto the `NICENANO` drive.
-5. The drive will disconnect and reboot.
+3. Trigger bootloader mode by pressing **`P` + `BSPC`** together (or double-tapping the physical reset button).
+4. The **`NICENANO`** drive will appear.
+5. Drag and drop your chosen right `.uf2` file onto the `NICENANO` drive.
+6. The drive will disconnect and reboot.
 
 ### Step 4: Reconnect Wirelessly
-1. Unplug the USB cable from both halves.
-2. Switch **ON** the battery power switch on the **Left half** first.
-3. Switch **ON** the battery power switch on the **Right half**.
-4. Both halves will sync with each other, and the Left half will automatically reconnect to your computer over Bluetooth.
+1. Unplug the USB cable.
+2. Turn **ON** the battery switch on the **Right half**.
+3. Turn **ON** the battery switch on the **Left half**.
+4. Both halves will pair wirelessly within 2–3 seconds, and the Left half will connect to your computer over Bluetooth.
 
 ---
 
-## 🎨 Visual Keymap Editor (In Your Browser)
+## 🛠️ Bulletproof Troubleshooting & Split Recovery
 
-If you prefer to edit keys graphically without touching code:
+If the two halves refuse to talk to each other or Bluetooth bonding is corrupted:
+
+1. Connect the **Left half** via USB. Double-tap reset (or press `TAB`+`Q`) and flash `settings_reset-nice_nano_v2-zmk.uf2`.
+2. **CRITICAL:** Wait **10 seconds** while powered so the controller can erase the flash partition.
+3. Connect the **Right half** via USB. Double-tap reset (or press `P`+`BSPC`) and flash `settings_reset-nice_nano_v2-zmk.uf2`. Wait **10 seconds**.
+4. Re-flash the regular firmware onto the **Right half** (`corne_right...uf2`).
+5. Re-flash the regular firmware onto the **Left half** (`corne_left...uf2`).
+6. Unplug USB, turn on both battery switches within 5 seconds of each other. They will re-sync and form a fresh split bond.
+7. Open your computer's Bluetooth settings, **Remove / Forget** any previous "Corne" device, and pair fresh!
+
+---
+
+## 🎨 Visual Keymap Editor (Web-based)
+
+If you prefer to edit keys graphically:
 1. Open [Nick Coutsos Keymap Editor](https://nickcoutsos.github.io/keymap-editor/).
-2. Click **Authorize** to connect your GitHub account.
-3. Select your `Rvkt/zmk-config` repository.
-4. Click and change any key visually.
-5. Hit **Save** / **Commit**—it will push directly to GitHub and build your new firmware automatically!
-
----
-
-## 🛠️ Troubleshooting & Firmware Recovery
-
-If the two halves refuse to communicate with each other, or if Bluetooth pairing gets stuck/corrupted:
-1. Double-tap reset on the **Left half** and flash `settings_reset-nice_nano_v2-zmk.uf2`.
-2. Double-tap reset on the **Right half** and flash `settings_reset-nice_nano_v2-zmk.uf2`.
-3. Re-flash the regular firmware (`corne_left...uf2` on the left, `corne_right...uf2` on the right).
-4. Remove/forget "Corne" from your computer's Bluetooth settings and re-pair fresh.
-
+2. Authorize GitHub and select `Rvkt/zmk-config`.
+3. Visually customize any key or combo.
+4. Hit **Save / Commit**—GitHub Actions compiles your new firmware automatically!
