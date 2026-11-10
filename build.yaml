@@ -1,0 +1,22 @@
+---
+include:
+  # Standard Corne (OLED or no display)
+  - board: nice_nano_v2
+    shield: corne_left
+    artifact-name: corne_left-nice_nano_v2-zmk
+  - board: nice_nano_v2
+    shield: corne_right
+    artifact-name: corne_right-nice_nano_v2-zmk
+
+  # Corne with nice!view displays
+  - board: nice_nano_v2
+    shield: corne_left nice_view_adapter nice_view
+    artifact-name: corne_left_nice_view-nice_nano_v2-zmk
+  - board: nice_nano_v2
+    shield: corne_right nice_view_adapter nice_view
+    artifact-name: corne_right_nice_view-nice_nano_v2-zmk
+
+  # Settings reset (to wipe corrupt BLE bonds or resolve split pairing issues)
+  - board: nice_nano_v2
+    shield: settings_reset
+    artifact-name: settings_reset-nice_nano_v2-zmk
