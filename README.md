@@ -6,12 +6,13 @@ Personal ZMK firmware for a **42-key split Corne keyboard** running on Nice!Nano
 
 | Part | Detail |
 |---|---|
+| Builder | Saurav ([PARIX](https://parix.in) / [@dieselsaurav](https://github.com/dieselsaurav)) |
 | Board | Nice!Nano v2 (nRF52840) |
 | Shield | Corne (split, 6×3+3 = 42 keys) |
 | Display | OLED SSD1306 128×32 |
 | RGB | 27 WS2812 LEDs (per-key + underglow) |
 | Bluetooth | 4 profiles (BT_SEL 0–3) |
-| ZMK Studio | Enabled — remap live at [studio.zmk.dev](https://studio.zmk.dev) |
+| ZMK Studio | Enabled — remap live at [zmk.studio](https://zmk.studio) |
 | Mouse | Enabled — MOUSE layer (hold `Tab`) |
 | Deep Sleep | 15 min idle → ~20µA draw |
 
@@ -66,4 +67,12 @@ Push to `config/` or `build.yaml` triggers GitHub Actions automatically.
 
 ## ZMK Studio
 
-With keyboard plugged in via USB, visit [studio.zmk.dev](https://studio.zmk.dev) to remap keys live without reflashing.
+With keyboard plugged in via USB, visit [zmk.studio](https://zmk.studio) to remap keys live without reflashing.
+
+## Credits & Acknowledgements
+
+- **Hardware Builder & Base Firmware:** Built and assembled by **Saurav** ([@dieselsaurav](https://github.com/dieselsaurav) / [PARIX](https://parix.in)). Initial firmware configuration referenced from [dieselsaurav/zmk-for-keyboards](https://github.com/dieselsaurav/zmk-for-keyboards).
+- **Corne Keyboard (CRKBD):** Designed by [Kosuke Adachi (@foostan)](https://github.com/foostan/crkbd).
+- **Layout Architecture:** Miryoku ergonomic layout principles by [Manna-Harbour](https://github.com/manna-harbour/miryoku).
+- **Firmware Engine:** Powered by the open-source [ZMK Firmware](https://zmk.dev/) project.
+
