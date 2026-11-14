@@ -1,13 +1,13 @@
 ---
 include:
-  # Corne with OLED SSD1306 display
+  # Corne with vertical OLED SSD1306 display (zmk-nice-oled)
   - board: nice_nano//zmk
-    shield: corne_left
+    shield: corne_left nice_oled
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: corne_left-nice_nano-zmk
   - board: nice_nano//zmk
-    shield: corne_right
+    shield: corne_right nice_oled
     artifact-name: corne_right-nice_nano-zmk
 
   # Settings reset — flash to both halves to clear corrupt BLE bonds

@@ -80,16 +80,16 @@ The repository specifies three build artifacts in [build.yaml](file:///home/rvkt
 ```yaml
 ---
 include:
-  # 1. Left Half (Central / Host Controller) + ZMK Studio RPC over USB UART
+  # 1. Left Half (Central / Host Controller) + ZMK Studio RPC + vertical OLED (zmk-nice-oled)
   - board: nice_nano//zmk
-    shield: corne_left
+    shield: corne_left nice_oled
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: corne_left-nice_nano-zmk
 
-  # 2. Right Half (Peripheral)
+  # 2. Right Half (Peripheral) + vertical OLED (zmk-nice-oled)
   - board: nice_nano//zmk
-    shield: corne_right
+    shield: corne_right nice_oled
     artifact-name: corne_right-nice_nano-zmk
 
   # 3. Settings Reset Shield (Emergency BLE Bond & NVS Clear)
@@ -419,12 +419,10 @@ Below is the exhaustive, verified set of Kconfig options implemented in [config/
 # --- Keyboard Identity ---
 CONFIG_ZMK_KEYBOARD_NAME="Corne"
 
-# --- OLED Display (SSD1306 128x32) ---
+# --- OLED Display (SSD1306 128x32 - Vertical Layout via zmk-nice-oled) ---
 CONFIG_ZMK_DISPLAY=y
+CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y
 CONFIG_ZMK_DISPLAY_WORK_QUEUE_DEDICATED=y
-CONFIG_ZMK_WIDGET_BATTERY_STATUS_SHOW_PERCENTAGE=y
-CONFIG_ZMK_WIDGET_LAYER_STATUS=y
-CONFIG_ZMK_WIDGET_PERIPHERAL_STATUS=y
 
 # --- Power Management & Deep Sleep ---
 CONFIG_ZMK_BATTERY_REPORT_INTERVAL=60
