@@ -81,19 +81,19 @@ The repository specifies three build artifacts in [build.yaml](file:///home/rvkt
 ---
 include:
   # 1. Left Half (Central / Host Controller) + ZMK Studio RPC + vertical OLED (zmk-nice-oled)
-  - board: nice_nano//zmk
+  - board: nice_nano_v2
     shield: corne_left nice_oled
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: corne_left-nice_nano-zmk
 
   # 2. Right Half (Peripheral) + vertical OLED (zmk-nice-oled)
-  - board: nice_nano//zmk
+  - board: nice_nano_v2
     shield: corne_right nice_oled
     artifact-name: corne_right-nice_nano-zmk
 
   # 3. Settings Reset Shield (Emergency BLE Bond & NVS Clear)
-  - board: nice_nano//zmk
+  - board: nice_nano_v2
     shield: settings_reset
     artifact-name: settings_reset-nice_nano-zmk
 ```
